@@ -58,7 +58,7 @@ app.openapi(
 app.get(
   '/ui',
   swaggerUI({
-    url: '/doc'
+    url: '/api/doc'
   })
 )
 
