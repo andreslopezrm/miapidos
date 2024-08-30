@@ -1,6 +1,7 @@
 import { OpenAPIHono, createRoute, z } from '@hono/zod-openapi'
 import { swaggerUI } from '@hono/swagger-ui'
 import { handle } from 'hono/vercel'
+import { sign } from 'hono/jwt'
 
 const app = new OpenAPIHono().basePath('/api')
 
@@ -50,10 +51,47 @@ app.openapi(
   (c) => {
     return c.json({
       status: 200,
-      message: 'inicio'
+      message: 'segundo'
     })
   }
 )
+
+
+app.openapi(
+  createRoute({
+    method: 'get',
+    path: '/decode',
+    responses: {
+      200: {
+        description: 'Respond a message',
+        content: {
+          'application/json': {
+            schema: z.object({
+              status: z.number(),
+              token: z.string(),
+            })
+          }
+        }
+      }
+    }
+  }),
+  async (c) => {
+    const payload = {
+      sub: 'user123',
+      role: 'admin',
+      exp: Math.floor(Date.now() / 1000) + 60 * 5, // Token expires in 5 minutes
+    }
+    const secret = 'mySecretKey'
+    const token = await sign(payload, secret)
+
+    return c.json({
+      status: 200,
+      token
+    })
+  }
+)
+
+
 
 app.get(
   '/ui',
