@@ -2,6 +2,7 @@ import { OpenAPIHono, createRoute, z } from '@hono/zod-openapi'
 import { swaggerUI } from '@hono/swagger-ui'
 import { handle } from 'hono/vercel'
 import { sign } from 'hono/jwt'
+import { todos } from '../server/todo.route.js'
 
 const app = new OpenAPIHono().basePath('/api')
 
@@ -92,9 +93,37 @@ app.openapi(
 )
 
 
+app.openapi(
+  createRoute({
+    method: 'get',
+    path: '/fail',
+    responses: {
+      200: {
+        description: 'Respond a message',
+        content: {
+          'application/json': {
+            schema: z.object({
+              status: z.number(),
+              message: z.string(),
+            })
+          }
+        }
+      }
+    }
+  }),
+  (c) => {
+    return c.json({
+      status: 200,
+      message: 'fail'
+    })
+  }
+)
+
+app.route('/todos', todos)
+
 
 app.get(
-  '/ui',
+  '/sw',
   swaggerUI({
     url: '/api/doc'
   })
