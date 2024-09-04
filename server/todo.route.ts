@@ -22,7 +22,11 @@ todos.openapi(
     }
   }),
   (c) => {
-    throw new HTTPException(401, { message: 'mi error personalizado' })
+    const id = 1 / 0;
+    return c.json({
+        id: id,
+      title: 'titulo 1'
+    })
   }
 )
 
