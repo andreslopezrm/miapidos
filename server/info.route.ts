@@ -25,7 +25,7 @@ info.openapi(
   }),
   (c) => {
 
-    throw new HTTPException(401, { message: 'Custom error message for info' })
+    throw new HTTPException(401, { message: 'Exception', cause: 'Valor excedido' })
     
     const data = {
         id: 1,
