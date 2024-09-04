@@ -1,19 +1,19 @@
 import { OpenAPIHono, createRoute, z } from '@hono/zod-openapi'
 
-export const todos = new OpenAPIHono()
+export const users = new OpenAPIHono()
 
-todos.openapi(
+users.openapi(
   createRoute({
     method: 'get',
     path: '/',
     responses: {
       200: {
-        description: 'Respond a todo',
+        description: 'Respond a user',
         content: {
           'application/json': {
             schema: z.object({
               id: z.number(),
-              title: z.string()
+              name: z.string()
             })
           }
         }
@@ -23,7 +23,7 @@ todos.openapi(
   (c) => {
     return c.json({
         id: 1,
-      title: 'titulo 1'
+      name: 'kal'
     })
   }
 )

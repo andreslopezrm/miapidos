@@ -3,6 +3,7 @@ import { swaggerUI } from '@hono/swagger-ui'
 import { handle } from 'hono/vercel'
 import { sign } from 'hono/jwt'
 import { todos } from '../server/todo.route.js'
+import { users } from '../server/users.route.js'
 
 const app = new OpenAPIHono().basePath('/api')
 
@@ -120,6 +121,7 @@ app.openapi(
 )
 
 app.route('/todos', todos)
+app.route('/users', users)
 
 
 app.get(
