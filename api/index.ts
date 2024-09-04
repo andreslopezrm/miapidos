@@ -4,6 +4,7 @@ import { handle } from 'hono/vercel'
 import { sign } from 'hono/jwt'
 import { todos } from '../server/todo.route.js'
 import { users } from '../server/users.route.js'
+import { Context, Next } from 'hono'
 
 const app = new OpenAPIHono().basePath('/api')
 
@@ -123,6 +124,19 @@ app.openapi(
 app.route('/todos', todos)
 app.route('/users', users)
 
+
+const formatResponseMiddleware = async (c: Context, next: Next) => {
+  await next();
+  const data = c.res.json();
+
+  if (data !== undefined && typeof data === 'object') {
+    c.json({
+      data,
+    });
+  }
+};
+
+app.use('*', formatResponseMiddleware);
 
 app.get(
   '/sw',
