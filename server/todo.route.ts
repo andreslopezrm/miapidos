@@ -1,4 +1,5 @@
 import { OpenAPIHono, createRoute, z } from '@hono/zod-openapi'
+import { HTTPException } from 'hono/http-exception'
 
 export const todos = new OpenAPIHono()
 
@@ -21,10 +22,7 @@ todos.openapi(
     }
   }),
   (c) => {
-    return c.json({
-        id: 1,
-      title: 'titulo 1'
-    })
+    throw new HTTPException(401, { message: 'mi error personalizado' })
   }
 )
 
