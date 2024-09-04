@@ -1,7 +1,7 @@
 import { OpenAPIHono, createRoute, z } from '@hono/zod-openapi'
 import { swaggerUI } from '@hono/swagger-ui'
 
-export const todos = new OpenAPIHono().basePath('/api')
+export const todos = new OpenAPIHono()
 
 todos.openapi(
   createRoute({
