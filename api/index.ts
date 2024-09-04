@@ -2,9 +2,8 @@ import { OpenAPIHono, createRoute, z } from '@hono/zod-openapi'
 import { swaggerUI } from '@hono/swagger-ui'
 import { handle } from 'hono/vercel'
 import { sign } from 'hono/jwt'
-import { todos } from '../server/todo.route.js'
 import { users } from '../server/users.route.js'
-import { Context, Next } from 'hono'
+import { info } from '../server/info.route.js'
 
 const app = new OpenAPIHono().basePath('/api')
 
@@ -121,22 +120,10 @@ app.openapi(
   }
 )
 
-app.route('/todos', todos)
 app.route('/users', users)
+app.route('/info', info)
 
 
-const formatResponseMiddleware = async (c: Context, next: Next) => {
-  await next();
-  const data = c.res.json();
-
-  if (data !== undefined && typeof data === 'object') {
-    c.json({
-      data,
-    });
-  }
-};
-
-app.use('*', formatResponseMiddleware);
 
 app.get(
   '/sw',
